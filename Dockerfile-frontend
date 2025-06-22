@@ -1,0 +1,20 @@
+# コンテナを立ち上げる時の処理を記載
+# ベースイメージ
+FROM node:18-alpine
+
+# 作業ディレクトリの作成
+WORKDIR /app
+
+# 依存関係のインストール
+COPY frontend/package*.json ./
+RUN npm install
+
+# 同じディレクトリにあるfrontendのフォルダの中身をコピー
+COPY frontend/ .
+
+# Next.jsをビルド
+RUN npm run build
+
+# Next.jsサーバーを起動
+EXPOSE 3000
+CMD ["npm", "start"]
