@@ -2,9 +2,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { findUserByEmail, createUser} = require('../models/userModels.js');
-
+const { findUserByEmail, createUser, findUserById} = require('../models/userModels.js');
 const router = express.Router();
+
+// /meを追加する時に下記も追加
+const authenticateToken = require('../utils/jwt');
 
 // signup＝User作成機能
 router.post('/signup', async(req, res)=> {
@@ -51,6 +53,8 @@ router.post('/login', async(req,res) => {
             return res.status(401).json({ error: 'Incorrect password'});
         }
 
+        // JWT生成。この時点で、JWTがdecodeされた場合に、下記の￥情報が手に入る。
+        // authenticateTokenを行うと、この情報が手に入るため、必然的にuserIdでUserを探すことになる
         const token =  jwt.sign({ userId: user.id}, process.env.JWT_SECRET,{
             expiresIn: '7d',
         });
@@ -64,5 +68,25 @@ router.post('/login', async(req,res) => {
 
 })
 
+// 現在ログイン中のユーザー情報を返す /api/auth/me を作成
+router.get('/me', authenticateToken, async(req,res) => {
+    try {
+        // JWTのTOKENの生成時にuserIdをKeyに設定しているため、TokenをdecodeしてUserをfindする時は必然的に、userId（key）で探す
+        const user = await findUserById(req.user.userId);
+
+        if(!user) return res.status(404).json({ error: 'User not found'});
+
+        res.status(200).json({
+            id: user.id,
+            email: user.email,
+            occupation: user.occupation,
+            gender: user.gender,
+            dateOfBirth: user.date_of_birth,
+        });
+    } catch(err){
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error'});
+    }
+});
 
 module.exports = router;

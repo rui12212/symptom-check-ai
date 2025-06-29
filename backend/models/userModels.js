@@ -6,6 +6,11 @@ async function findUserByEmail(email){
     return rows[0];
 }
 
+async function findUserById (userId){
+    const [rows] = await db.execute('SELECT * FROM users WHERE id = ?', [userId]);
+    return rows[0];
+}
+
 async function createUser(email,passwordHash, occupation, gender, dateOfBirth){
     const [result] = await db.execute(
         'INSERT INTO users (email, password_hash, occupation, gender, date_of_birth) VALUES(?,?,?,?,?)',
@@ -17,4 +22,5 @@ async function createUser(email,passwordHash, occupation, gender, dateOfBirth){
 module.exports = {
     findUserByEmail,
     createUser,
+    findUserById
 }
