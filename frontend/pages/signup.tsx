@@ -20,26 +20,26 @@ export default function SignupPage(){
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        try{
+            const res = await fetch('http://localhost:8000/api/auth/signup', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(form),
+            });
+    
+            const data = await res.json();
+            if(res.ok){
+                localStorage.setItem('token', data.token);
+                router.push('/mypage');
+            } else {
+                setError(data.error || 'failed to signup')
+            }
+        } catch(err){
+            console.error(err);
+            setError('connection error')
+        };
     }
-
-    try{
-        const res = await fetch('http://localhost:8000/api/auth/signup', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form),
-        });
-
-        const data = await res.json();
-        if(res.ok){
-            localStorage.setItem('token', data.token);
-            router.push('/mypage');
-        } else {
-            setError(data.error || 'failed to signup')
-        }
-    } catch(err){
-        console.error(err);
-        setError('connection error')
-    };
 
     return (
         <div style= {{ maxWidth:400, margin:'auto'}}>
@@ -70,7 +70,23 @@ export default function SignupPage(){
                 value={form.occupation}
                 onChange={handleChange}
                 /><br/>
+
+                <select name='gender' value={form.gender} onChange={handleChange}>
+                    <option value="male">Male</option>
+                    <option value='female'>Female</option>
+                    <option value="other">Other</option>
+                </select><br/>
+
+                <input
+                type="date"
+                name="dateOfBirth"
+                value={form.dateOfBirth}
+                onChange={handleChange}
+                /><br/>
+
+                <button type="submit">Signup</button>
             </form>
+            {error && <p style={{ color: 'red'}}>{error}</p>}
         </div>
     )
 }
