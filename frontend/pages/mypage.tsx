@@ -12,7 +12,7 @@ export default function MyPage(){
             return;
         }
 
-        fetch('http://localhost:8000/api/authy/me', {
+        fetch('http://localhost:8000/api/auth/me', {
             headers: { Authorization: 'Bearer ${token}'},
         }).then(res => res.json()).then(data=> setUser(data)).catch(()=> router.push('/login'));    
     }, [router]);
@@ -26,6 +26,16 @@ export default function MyPage(){
             <p>Occupation: {user.occupation}</p>
             <p>Gender: {user.gender}</p>
             <p>Birthday: {user.dateOfBirth}</p>
+
+            <button
+            onClick={() => {
+                localStorage.removeItem('token');
+                router.push('/login');
+            }}
+            style={{ marginTop:20}}
+            >
+                Logout
+            </button>
         </div>
     );
 }
