@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const authRoutes = require('./routes/auth')
+const diagnoseRoutes = require('./routes/diagnose')
 require('dotenv').config();
 
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/diagnose', diagnoseRoutes);
 
 
 const PORT = process.env.PORT || 8000;
