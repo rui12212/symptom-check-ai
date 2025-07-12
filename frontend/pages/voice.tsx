@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import  axios from 'axios';
 
+
 export default function voiceDiagnose(){
     const [conversation, setConversation] = useState<string[]>([]);
     const [result, setResult] = useState('')
@@ -8,7 +9,7 @@ export default function voiceDiagnose(){
     const recognitionRef = useRef<any>(null);
 
     useEffect(() => {
-        const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
         recognition.lang = 'ja-JP';
         recognition.interimResults = false;

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const openai = require('../utils/openaiClient');
+const db = require('../utils/db');
 
 router.post('/', async (req,res) => {
     try {
@@ -44,6 +45,12 @@ router.post('/', async (req,res) => {
       });
     
     const result = completion.choices[0].message.content;
+
+    const [rows] = await db.execute(
+        'INSERT INTO diagnoses (user_id, result_summary, diagnosis_level) VALUES (?,?,?)',
+        [userId, result,'未分類']
+    );
+
     res.status(200).jsonp({ summary: result });
     
 } catch (error) {
