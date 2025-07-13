@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const openai = require('..utils/openaiClient');
+const openai = require('../utils/openaiClient');
+const db = require('../utils/db');
 
 router.post('/', async (req,res) => {
     try {
@@ -38,13 +39,18 @@ router.post('/', async (req,res) => {
         })),
     ];
 
-    const completion = await openai.createChatCompletion({
-        model: 'gpt-4',
-        message: massages,
-        temperature:0.6,
-    });
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: "こんにちは" }],
+      });
+    
+    const result = completion.choices[0].message.content;
 
-    const result = completion.data.choices[0].message.content;
+    const [rows] = await db.execute(
+        'INSERT INTO diagnoses (user_id, result_summary, diagnosis_level) VALUES (?,?,?)',
+        [userId, result,'未分類']
+    );
+
     res.status(200).jsonp({ summary: result });
     
 } catch (error) {
