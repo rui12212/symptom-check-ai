@@ -20,6 +20,7 @@ export default function DiagnosePage(){
             const res = await axios.post('http://localhost:8000/api/diagnose',{
                 conversationHistory: updateHistory,
             });
+            
             setResult(res.data.summary);
         } catch(err){
             alert('認証に失敗しました');

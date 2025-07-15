@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const openai = require('../utils/openaiClient');
-const db = require('../utils/db');
+const db = require('../db/connection');
 
 router.post('/', async (req,res) => {
     try {
@@ -43,10 +43,16 @@ router.post('/', async (req,res) => {
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: "こんにちは" }],
       });
-    
-    const result = completion.choices[0].message.content;
 
-    const [rows] = await db.execute(
+      const userId = req.user?.userId;
+      
+      const result = completion.choices[0].message.content;
+
+      console.log('userId:', res.data.userId);
+      console.log('result:', res.data.result);
+    
+
+    const [rows] = await db.execute( 
         'INSERT INTO diagnoses (user_id, result_summary, diagnosis_level) VALUES (?,?,?)',
         [userId, result,'未分類']
     );
