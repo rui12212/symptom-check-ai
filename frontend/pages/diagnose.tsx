@@ -18,6 +18,9 @@ export default function DiagnosePage(){
 
         try {
             const res = await axios.post('http://localhost:8000/api/diagnose',{
+                headers:{
+                    Authorization: 'Bearer ${token}'
+                },
                 conversationHistory: updateHistory,
             });
             

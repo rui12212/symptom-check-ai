@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const openai = require('../utils/openaiClient');
 const db = require('../db/connection');
+const authMiddleware = require('./authMiddleware.js'); // 
 
-router.post('/', async (req,res) => {
+router.post('/', authMiddleware, async (req,res) => {
     try {
-        // フロントエンドからのrequest（JSON形式）のconversationHiostory keyを読み取り
+        // フロントエンドからのrequest（JSON形式）のconversationHistory keyを読み取り
         const { conversationHistory } = req.body;
 
         if(!conversationHistory || !Array.isArray(conversationHistory)) {
@@ -44,12 +45,8 @@ router.post('/', async (req,res) => {
         messages: [{ role: "user", content: "こんにちは" }],
       });
 
-      const userId = req.user?.userId;
-      
+      const userId = req.user.id;
       const result = completion.choices[0].message.content;
-
-      console.log('userId:', res.data.userId);
-      console.log('result:', res.data.result);
     
 
     const [rows] = await db.execute( 
