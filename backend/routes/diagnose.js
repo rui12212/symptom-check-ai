@@ -62,4 +62,18 @@ router.post('/', authMiddleware, async (req,res) => {
 }
 });
 
+router.get('/', authenticateToken, async(req,res) => {
+    try{
+        const userid = req.user.id;
+        const [rows] = await db.execute(
+            `SELECT id, result_summary, diagnosis_level, created_at, FROM diagnosis WHERE user_id = ? ORDER BY created_at DESC`
+        [userId]
+        );
+        res.status(200).json(rows);
+    } catch(err){
+        console.error('履歴取得エラー：', err);
+        res.status(500).json({ error: 'Failed to get diagnosis summary'});
+    }
+});
+
 module.exports = router;
