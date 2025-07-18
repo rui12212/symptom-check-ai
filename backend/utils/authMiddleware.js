@@ -10,6 +10,7 @@ function authMiddleware(req,res,next) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        // この関数を呼び出した先で、req.userを呼び出すことができる
         req.user = {id : decoded.userId};
         next();
     }catch(err){

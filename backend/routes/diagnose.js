@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const openai = require('../utils/openaiClient');
 const db = require('../db/connection');
-const authMiddleware = require('./authMiddleware.js'); // 
+const authMiddleware = require('../utils/authMiddleware.js'); 
+const authenticateToken = require('../utils/jwt')
 
 router.post('/', authMiddleware, async (req,res) => {
     try {
@@ -62,11 +63,15 @@ router.post('/', authMiddleware, async (req,res) => {
 }
 });
 
-router.get('/', authenticateToken, async(req,res) => {
+router.get('/', authMiddleware, async(req,res) => {
     try{
-        const userid = req.user.id;
+        const userId = req.user.id;
+        // console.log(userId);
+        // console.log(req);
+        // console.log(req.user);
+        
         const [rows] = await db.execute(
-            `SELECT id, result_summary, diagnosis_level, created_at, FROM diagnosis WHERE user_id = ? ORDER BY created_at DESC`
+            `SELECT id, result_summary, diagnosis_level, created_at FROM diagnoses WHERE user_id = ? ORDER BY created_at DESC`,
         [userId]
         );
         res.status(200).json(rows);

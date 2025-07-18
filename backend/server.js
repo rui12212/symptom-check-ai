@@ -19,5 +19,4 @@ app.listen(PORT,()=> {
     console.log('Server running on http://localhost:8000');
 });
 
-const diagnosesRoutes = require('./routes/diagnoses');
-app.use('/api/diagnoses', diagnosesRoutes);
+app.use('/api/diagnoses', diagnoseRoutes);
