@@ -16,6 +16,7 @@ async function createUser(email,passwordHash, occupation, gender, dateOfBirth){
         'INSERT INTO users (email, password_hash, occupation, gender, date_of_birth) VALUES(?,?,?,?,?)',
         [email, passwordHash, occupation, gender, dateOfBirth]
     );
+    // MySQL操作で自動インクリメント
     return result.insertId
 }
 

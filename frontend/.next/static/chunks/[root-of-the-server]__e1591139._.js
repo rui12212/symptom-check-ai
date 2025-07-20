@@ -462,13 +462,13 @@ function triggerUpdate(msg) {
     }
 }
 }}),
-"[project]/pages/login.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+"[project]/pages/history.tsx [client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>LoginPage)
+    "default": (()=>HistoryPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
@@ -477,149 +477,192 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$rout
 var _s = __turbopack_context__.k.signature();
 ;
 ;
-function LoginPage() {
+function HistoryPage() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    // 変数と変効用関数
-    // 変数定義、変更用関数定義、初期値の設定
-    const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])('');
-    const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])('');
+    const [diagnoses, setDiagnoses] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])('');
-    // ログインページで使用するログイン処置の関数を記載
-    const handleLogin = async (e)=>{
-        // ページ再読み込み防止
-        e.preventDefault();
-        // 前回のエラーを初期化
-        setError('');
-        try {
-            // fetch=APIにリクエストを送る
-            const res = await fetch('http://localhost:8000/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            });
-            const data = await res.json();
-            // HTTPレスポンスが200番台ならOK
-            if (res.ok) {
-                // ブラウザにTokenを保存
-                localStorage.setItem('token', data.token);
-                // myPageに移動
-                router.push('/mypage');
-            } else {
-                // 200番台以外なら、setErrorにerrordataを代入
-                setError(data.error || 'ログイン失敗');
-            }
-        } catch (err) {
-            console.error(err);
-            setError('通信エラー');
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "HistoryPage.useEffect": ()=>{
+            const fetchHistory = {
+                "HistoryPage.useEffect.fetchHistory": async ()=>{
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        router.push('/login');
+                        return;
+                    }
+                    try {
+                        const res = await fetch('http://localhost:8000/api/diagnoses', {
+                            headers: {
+                                Authorization: `Bear ${token}`
+                            }
+                        });
+                        if (!res.ok) {
+                            throw new Error('Failed to get diagnoses history');
+                        }
+                        const data = await res.json();
+                        setDiagnoses(data);
+                    } catch (err) {
+                        setError(err.message);
+                    } finally{
+                        setLoading(false);
+                    }
+                }
+            }["HistoryPage.useEffect.fetchHistory"];
+            fetchHistory();
         }
-    };
-    // ログインページのUIと機能を作成
+    }["HistoryPage.useEffect"], [
+        router
+    ]);
+    if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+        children: "Loading..."
+    }, void 0, false, {
+        fileName: "[project]/pages/history.tsx",
+        lineNumber: 48,
+        columnNumber: 24
+    }, this);
+    if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+        style: {
+            color: 'red'
+        },
+        children: [
+            "Error: ",
+            error
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/history.tsx",
+        lineNumber: 49,
+        columnNumber: 22
+    }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
-            maxWidth: 400,
-            margin: 'auto'
+            maxWidth: 800,
+            margin: 'auto',
+            padding: '20px'
         },
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                children: "Login"
+                children: "🗒️Diagnoses History"
             }, void 0, false, {
-                fileName: "[project]/pages/login.tsx",
-                lineNumber: 48,
+                fileName: "[project]/pages/history.tsx",
+                lineNumber: 53,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
-                onSubmit: handleLogin,
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "email",
-                        placeholder: "メールアドレス",
-                        value: email,
-                        onChange: (e)=>setEmail(e.target.value),
-                        required: true
-                    }, void 0, false, {
-                        fileName: "[project]/pages/login.tsx",
-                        lineNumber: 52,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                        fileName: "[project]/pages/login.tsx",
-                        lineNumber: 59,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "password",
-                        placeholder: "パスワード",
-                        value: password,
-                        onChange: (e)=>setPassword(e.target.value),
-                        required: true
-                    }, void 0, false, {
-                        fileName: "[project]/pages/login.tsx",
-                        lineNumber: 61,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                        fileName: "[project]/pages/login.tsx",
-                        lineNumber: 68,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        type: "submit",
-                        children: "ログイン"
-                    }, void 0, false, {
-                        fileName: "[project]/pages/login.tsx",
-                        lineNumber: 69,
-                        columnNumber: 17
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/pages/login.tsx",
-                lineNumber: 50,
-                columnNumber: 13
-            }, this),
-            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            diagnoses.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                children: "There is no history"
+            }, void 0, false, {
+                fileName: "[project]/pages/history.tsx",
+                lineNumber: 55,
+                columnNumber: 17
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                 style: {
-                    color: 'red'
+                    listStyle: 'none',
+                    padding: 0
                 },
-                children: error
+                children: diagnoses.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                        style: {
+                            border: '1px solid #ccc',
+                            borderRadius: '8px',
+                            padding: '10px',
+                            marginBottom: '10px'
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Created Day:"
+                                    }, void 0, false, {
+                                        fileName: "[project]/pages/history.tsx",
+                                        lineNumber: 68,
+                                        columnNumber: 32
+                                    }, this),
+                                    new Date(item.created_at).toLocaleString()
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/pages/history.tsx",
+                                lineNumber: 68,
+                                columnNumber: 29
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                    children: "Summary of Symptom:"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/history.tsx",
+                                    lineNumber: 69,
+                                    columnNumber: 32
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/history.tsx",
+                                lineNumber: 69,
+                                columnNumber: 29
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
+                                style: {
+                                    whiteSpace: 'pre-wrap',
+                                    wordWrap: 'break-word'
+                                },
+                                children: item.result_summary
+                            }, void 0, false, {
+                                fileName: "[project]/pages/history.tsx",
+                                lineNumber: 70,
+                                columnNumber: 29
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Level:"
+                                    }, void 0, false, {
+                                        fileName: "[project]/pages/history.tsx",
+                                        lineNumber: 73,
+                                        columnNumber: 32
+                                    }, this),
+                                    item.diagnosis_level
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/pages/history.tsx",
+                                lineNumber: 73,
+                                columnNumber: 29
+                            }, this)
+                        ]
+                    }, item.id, true, {
+                        fileName: "[project]/pages/history.tsx",
+                        lineNumber: 59,
+                        columnNumber: 25
+                    }, this))
             }, void 0, false, {
-                fileName: "[project]/pages/login.tsx",
-                lineNumber: 71,
-                columnNumber: 23
+                fileName: "[project]/pages/history.tsx",
+                lineNumber: 57,
+                columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/pages/login.tsx",
-        lineNumber: 47,
+        fileName: "[project]/pages/history.tsx",
+        lineNumber: 52,
         columnNumber: 9
     }, this);
 }
-_s(LoginPage, "+lKicfYUJDOkcWSjeVyJJI3Dn3Q=", false, function() {
+_s(HistoryPage, "N6tZuNKcCjLeinzJ1I61ameA1Ak=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];
 });
-_c = LoginPage;
+_c = HistoryPage;
 var _c;
-__turbopack_context__.k.register(_c, "LoginPage");
+__turbopack_context__.k.register(_c, "HistoryPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
-"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/login.tsx [client] (ecmascript)\" } [client] (ecmascript)": (function(__turbopack_context__) {
+"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history.tsx [client] (ecmascript)\" } [client] (ecmascript)": (function(__turbopack_context__) {
 
 var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
 {
-const PAGE_PATH = "/login";
+const PAGE_PATH = "/history";
 (window.__NEXT_P = window.__NEXT_P || []).push([
     PAGE_PATH,
     ()=>{
-        return __turbopack_context__.r("[project]/pages/login.tsx [client] (ecmascript)");
+        return __turbopack_context__.r("[project]/pages/history.tsx [client] (ecmascript)");
     }
 ]);
 // @ts-expect-error module.hot exists
@@ -632,13 +675,13 @@ if (module.hot) {
     });
 }
 }}),
-"[project]/pages/login (hmr-entry)": ((__turbopack_context__) => {
+"[project]/pages/history (hmr-entry)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, m: module } = __turbopack_context__;
 {
-__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/login.tsx [client] (ecmascript)\" } [client] (ecmascript)");
+__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history.tsx [client] (ecmascript)\" } [client] (ecmascript)");
 }}),
 }]);
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__b7a3842e._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__e1591139._.js.map
