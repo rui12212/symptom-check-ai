@@ -81,4 +81,27 @@ router.get('/', authMiddleware, async(req,res) => {
     }
 });
 
+router.get('/:id', authMiddleware, async(req, res) => {
+    try{
+        const userId = req.user.id;
+        const diagnosisId = req.params.id;
+
+        const [rows] = await db.execute(
+            `SELECT id, result_summary, diagnosis_level, created_at
+            FROM diagnoses
+            WHERE id = ? AND user_id = ?`
+            ,[diagnosisId, userId]
+        );
+
+        if(rows.length === 0) {
+            return res.status(404).json({ error: 'No result for this diagnosis '});
+        }
+
+        res.status(200).json(rows[0]);
+    } catch(err){
+        console.error('Error of get detail:', err);
+        return res.status(500).json({ error: 'Failed to get the diagnosis detail'});
+    }
+})
+
 module.exports = router;

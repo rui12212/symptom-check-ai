@@ -1,5 +1,6 @@
 import { useEffect, useState} from 'react';
 import { useRouter} from 'next/router';
+import Link from 'next/link';
 
 type Diagnosis = {
     id: number;
@@ -71,6 +72,7 @@ export default function HistoryPage(){
                                 {item.result_summary}
                             </pre>
                             <p><strong>Level:</strong>{item.diagnosis_level}</p>
+                            <Link href={`/history/${item.id}`}>Show Detail</Link>
                         </li>
                     ))}
                 </ul>
