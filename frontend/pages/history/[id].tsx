@@ -16,7 +16,7 @@ export default function DiagnosisDetailPage() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if(id!) return;
+        if(!id) return;
         const fetchDetail = async () => {
             const token = localStorage.getItem('token');
             if(!token) {
@@ -31,6 +31,8 @@ export default function DiagnosisDetailPage() {
                 
                 const json = await res.json();
                 setData(json);
+                // console.log(json);
+                // setLoading(false);
             } catch(err: any){
                 setError(err.message);
             }finally {

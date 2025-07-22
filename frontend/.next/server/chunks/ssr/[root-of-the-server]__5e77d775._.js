@@ -51,6 +51,8 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [ssr] (ecmascript)");
+;
 ;
 ;
 ;
@@ -91,7 +93,7 @@ function HistoryPage() {
         children: "Loading..."
     }, void 0, false, {
         fileName: "[project]/pages/history.tsx",
-        lineNumber: 48,
+        lineNumber: 49,
         columnNumber: 24
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -104,7 +106,7 @@ function HistoryPage() {
         ]
     }, void 0, true, {
         fileName: "[project]/pages/history.tsx",
-        lineNumber: 49,
+        lineNumber: 50,
         columnNumber: 22
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -118,14 +120,14 @@ function HistoryPage() {
                 children: "🗒️Diagnoses History"
             }, void 0, false, {
                 fileName: "[project]/pages/history.tsx",
-                lineNumber: 53,
+                lineNumber: 54,
                 columnNumber: 13
             }, this),
             diagnoses.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                 children: "There is no history"
             }, void 0, false, {
                 fileName: "[project]/pages/history.tsx",
-                lineNumber: 55,
+                lineNumber: 56,
                 columnNumber: 17
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
                 style: {
@@ -146,14 +148,14 @@ function HistoryPage() {
                                         children: "Created Day:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/history.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 69,
                                         columnNumber: 32
                                     }, this),
                                     new Date(item.created_at).toLocaleString()
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/history.tsx",
-                                lineNumber: 68,
+                                lineNumber: 69,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -161,12 +163,12 @@ function HistoryPage() {
                                     children: "Summary of Symptom:"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/history.tsx",
-                                    lineNumber: 69,
+                                    lineNumber: 70,
                                     columnNumber: 32
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/history.tsx",
-                                lineNumber: 69,
+                                lineNumber: 70,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("pre", {
@@ -177,7 +179,7 @@ function HistoryPage() {
                                 children: item.result_summary
                             }, void 0, false, {
                                 fileName: "[project]/pages/history.tsx",
-                                lineNumber: 70,
+                                lineNumber: 71,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -186,31 +188,39 @@ function HistoryPage() {
                                         children: "Level:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/history.tsx",
-                                        lineNumber: 73,
+                                        lineNumber: 74,
                                         columnNumber: 32
                                     }, this),
                                     item.diagnosis_level
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/history.tsx",
-                                lineNumber: 73,
+                                lineNumber: 74,
+                                columnNumber: 29
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                href: `/history/${item.id}`,
+                                children: "Show Detail"
+                            }, void 0, false, {
+                                fileName: "[project]/pages/history.tsx",
+                                lineNumber: 75,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, item.id, true, {
                         fileName: "[project]/pages/history.tsx",
-                        lineNumber: 59,
+                        lineNumber: 60,
                         columnNumber: 25
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/pages/history.tsx",
-                lineNumber: 57,
+                lineNumber: 58,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/history.tsx",
-        lineNumber: 52,
+        lineNumber: 53,
         columnNumber: 9
     }, this);
 }

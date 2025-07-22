@@ -462,66 +462,67 @@ function triggerUpdate(msg) {
     }
 }
 }}),
-"[project]/pages/history.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+"[project]/pages/history/[id].tsx [client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>HistoryPage)
+    "default": (()=>DiagnosisDetailPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 ;
 ;
-;
-function HistoryPage() {
+function DiagnosisDetailPage() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const [diagnoses, setDiagnoses] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const { id } = router.query;
+    const [data, setData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])('');
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "HistoryPage.useEffect": ()=>{
-            const fetchHistory = {
-                "HistoryPage.useEffect.fetchHistory": async ()=>{
+        "DiagnosisDetailPage.useEffect": ()=>{
+            if (!id) return;
+            const fetchDetail = {
+                "DiagnosisDetailPage.useEffect.fetchDetail": async ()=>{
                     const token = localStorage.getItem('token');
                     if (!token) {
                         router.push('/login');
                         return;
                     }
                     try {
-                        const res = await fetch('http://localhost:8000/api/diagnoses', {
+                        const res = await fetch(`http://localhost:8000/api/diagnoses/${id}`, {
                             headers: {
-                                Authorization: `Bear ${token}`
+                                Authorization: `Bearer ${token}`
                             }
                         });
-                        if (!res.ok) {
-                            throw new Error('Failed to get diagnoses history');
-                        }
-                        const data = await res.json();
-                        setDiagnoses(data);
+                        if (!res.ok) throw new Error('Failed to get your diagnosis detail');
+                        const json = await res.json();
+                        setData(json);
+                    // console.log(json);
+                    // setLoading(false);
                     } catch (err) {
                         setError(err.message);
                     } finally{
                         setLoading(false);
                     }
                 }
-            }["HistoryPage.useEffect.fetchHistory"];
-            fetchHistory();
+            }["DiagnosisDetailPage.useEffect.fetchDetail"];
+            fetchDetail();
         }
-    }["HistoryPage.useEffect"], [
+    }["DiagnosisDetailPage.useEffect"], [
+        id,
         router
     ]);
     if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-        children: "Loading..."
+        children: "Still loading..."
     }, void 0, false, {
-        fileName: "[project]/pages/history.tsx",
-        lineNumber: 49,
+        fileName: "[project]/pages/history/[id].tsx",
+        lineNumber: 45,
         columnNumber: 24
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -529,12 +530,19 @@ function HistoryPage() {
             color: 'red'
         },
         children: [
-            "Error: ",
+            " ",
             error
         ]
     }, void 0, true, {
-        fileName: "[project]/pages/history.tsx",
-        lineNumber: 50,
+        fileName: "[project]/pages/history/[id].tsx",
+        lineNumber: 46,
+        columnNumber: 22
+    }, this);
+    if (!data) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+        children: "No data"
+    }, void 0, false, {
+        fileName: "[project]/pages/history/[id].tsx",
+        lineNumber: 47,
         columnNumber: 22
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -544,135 +552,118 @@ function HistoryPage() {
             padding: '20px'
         },
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                children: "🗒️Diagnoses History"
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: ()=>router.back(),
+                style: {
+                    marginBottom: '20px'
+                },
+                children: "Back"
             }, void 0, false, {
-                fileName: "[project]/pages/history.tsx",
+                fileName: "[project]/pages/history/[id].tsx",
+                lineNumber: 51,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                children: "📖 Daignosis Detail"
+            }, void 0, false, {
+                fileName: "[project]/pages/history/[id].tsx",
+                lineNumber: 52,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "ID:"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/history/[id].tsx",
+                        lineNumber: 53,
+                        columnNumber: 16
+                    }, this),
+                    data.id
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/history/[id].tsx",
+                lineNumber: 53,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "Created At:"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/history/[id].tsx",
+                        lineNumber: 54,
+                        columnNumber: 16
+                    }, this),
+                    new Date(data.created_at).toLocaleString()
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/history/[id].tsx",
                 lineNumber: 54,
                 columnNumber: 13
             }, this),
-            diagnoses.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                children: "There is no history"
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "Diagnosis Level:"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/history/[id].tsx",
+                        lineNumber: 55,
+                        columnNumber: 16
+                    }, this),
+                    data.diagnosis_level
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/history/[id].tsx",
+                lineNumber: 55,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                children: "✏️ Diagnosis Summary"
             }, void 0, false, {
-                fileName: "[project]/pages/history.tsx",
+                fileName: "[project]/pages/history/[id].tsx",
                 lineNumber: 56,
-                columnNumber: 17
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
                 style: {
-                    listStyle: 'none',
-                    padding: 0
+                    whiteSpace: 'pre-wrap',
+                    wordWrap: 'break-word'
                 },
-                children: diagnoses.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                        style: {
-                            border: '1px solid #ccc',
-                            borderRadius: '8px',
-                            padding: '10px',
-                            marginBottom: '10px'
-                        },
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                        children: "Created Day:"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/history.tsx",
-                                        lineNumber: 69,
-                                        columnNumber: 32
-                                    }, this),
-                                    new Date(item.created_at).toLocaleString()
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/pages/history.tsx",
-                                lineNumber: 69,
-                                columnNumber: 29
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                    children: "Summary of Symptom:"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/history.tsx",
-                                    lineNumber: 70,
-                                    columnNumber: 32
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/pages/history.tsx",
-                                lineNumber: 70,
-                                columnNumber: 29
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
-                                style: {
-                                    whiteSpace: 'pre-wrap',
-                                    wordWrap: 'break-word'
-                                },
-                                children: item.result_summary
-                            }, void 0, false, {
-                                fileName: "[project]/pages/history.tsx",
-                                lineNumber: 71,
-                                columnNumber: 29
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                        children: "Level:"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/history.tsx",
-                                        lineNumber: 74,
-                                        columnNumber: 32
-                                    }, this),
-                                    item.diagnosis_level
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/pages/history.tsx",
-                                lineNumber: 74,
-                                columnNumber: 29
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
-                                href: `/history/${item.id}`,
-                                children: "Show Detail"
-                            }, void 0, false, {
-                                fileName: "[project]/pages/history.tsx",
-                                lineNumber: 75,
-                                columnNumber: 29
-                            }, this)
-                        ]
-                    }, item.id, true, {
-                        fileName: "[project]/pages/history.tsx",
-                        lineNumber: 60,
-                        columnNumber: 25
-                    }, this))
+                children: data.result_summary
             }, void 0, false, {
-                fileName: "[project]/pages/history.tsx",
-                lineNumber: 58,
-                columnNumber: 17
+                fileName: "[project]/pages/history/[id].tsx",
+                lineNumber: 57,
+                columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/pages/history.tsx",
-        lineNumber: 53,
+        fileName: "[project]/pages/history/[id].tsx",
+        lineNumber: 50,
         columnNumber: 9
     }, this);
 }
-_s(HistoryPage, "N6tZuNKcCjLeinzJ1I61ameA1Ak=", false, function() {
+_s(DiagnosisDetailPage, "6cugE8lkcKq71oskh5KzrRXaBH0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];
 });
-_c = HistoryPage;
+_c = DiagnosisDetailPage;
 var _c;
-__turbopack_context__.k.register(_c, "HistoryPage");
+__turbopack_context__.k.register(_c, "DiagnosisDetailPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
-"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history.tsx [client] (ecmascript)\" } [client] (ecmascript)": (function(__turbopack_context__) {
+"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history/[id].tsx [client] (ecmascript)\" } [client] (ecmascript)": (function(__turbopack_context__) {
 
 var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
 {
-const PAGE_PATH = "/history";
+const PAGE_PATH = "/history/[id]";
 (window.__NEXT_P = window.__NEXT_P || []).push([
     PAGE_PATH,
     ()=>{
-        return __turbopack_context__.r("[project]/pages/history.tsx [client] (ecmascript)");
+        return __turbopack_context__.r("[project]/pages/history/[id].tsx [client] (ecmascript)");
     }
 ]);
 // @ts-expect-error module.hot exists
@@ -685,13 +676,13 @@ if (module.hot) {
     });
 }
 }}),
-"[project]/pages/history (hmr-entry)": ((__turbopack_context__) => {
+"[project]/pages/history/[id].tsx (hmr-entry)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, m: module } = __turbopack_context__;
 {
-__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history.tsx [client] (ecmascript)\" } [client] (ecmascript)");
+__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/history/[id].tsx [client] (ecmascript)\" } [client] (ecmascript)");
 }}),
 }]);
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__e1591139._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__e636bd34._.js.map

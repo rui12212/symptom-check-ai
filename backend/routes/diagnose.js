@@ -29,8 +29,8 @@ router.post('/', authMiddleware, async (req,res) => {
 - 年齢・性別：
 
 【推奨行動】
-- 受診の必要性
-- 医師に伝えるべきポイント
+- 緊急度（上記3段階のどれか）：
+- 医師に伝えるべきポイント（箇条書き）
     `;
 
     const messages = [
@@ -48,11 +48,18 @@ router.post('/', authMiddleware, async (req,res) => {
 
       const userId = req.user.id;
       const result = completion.choices[0].message.content;
+
+      // 応答テキストから緊急度を抽出（簡易パターンマッチ）
+      let level = 'Not classified';
+      if(result.includes('受信推奨')) level = '緊急';
+      else if(result.included('受信推奨')) level = '受信推奨';
+      else if(result.includes('自宅様子見')) level = '自宅様子見';
+
     
 
     const [rows] = await db.execute( 
         'INSERT INTO diagnoses (user_id, result_summary, diagnosis_level) VALUES (?,?,?)',
-        [userId, result,'未分類']
+        [userId, result, level]
     );
 
     res.status(200).jsonp({ summary: result });
@@ -66,9 +73,6 @@ router.post('/', authMiddleware, async (req,res) => {
 router.get('/', authMiddleware, async(req,res) => {
     try{
         const userId = req.user.id;
-        // console.log(userId);
-        // console.log(req);
-        // console.log(req.user);
         
         const [rows] = await db.execute(
             `SELECT id, result_summary, diagnosis_level, created_at FROM diagnoses WHERE user_id = ? ORDER BY created_at DESC`,
