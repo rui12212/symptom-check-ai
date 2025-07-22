@@ -490,7 +490,7 @@ function voiceDiagnose() {
             recognition.lang = 'ja-JP';
             recognition.interimResults = false;
             recognition.continuous = false;
-            recognition.continuous = recognition;
+            // recognition.continuous = recognition;
             recognition.result = ({
                 "voiceDiagnose.useEffect": async (event)=>{
                     const speechText = event.results[0][0].transcript;

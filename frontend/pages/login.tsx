@@ -25,6 +25,7 @@ export default function LoginPage(){
             });
 
             const data = await res.json();
+
             // HTTPレスポンスが200番台ならOK
             if(res.ok){
                 // ブラウザにTokenを保存

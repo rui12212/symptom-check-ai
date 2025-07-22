@@ -44,6 +44,7 @@ router.post('/login', async(req,res) => {
         }
         // userを取得
         const user = await findUserByEmail(email);
+        const userId = user.id;
         if(!user){
             return res.status(404).json({ error: 'User Not Found'});
         }
@@ -59,7 +60,7 @@ router.post('/login', async(req,res) => {
             expiresIn: '7d',
         });
 
-        res.status(200).json({message: 'Login successful', token});
+        res.status(200).json({message: 'Login successful', token, userId});
 
     } catch(err){
         console.error(err);

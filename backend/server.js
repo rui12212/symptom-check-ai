@@ -18,3 +18,5 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT,()=> {
     console.log('Server running on http://localhost:8000');
 });
+
+app.use('/api/diagnoses', diagnoseRoutes);

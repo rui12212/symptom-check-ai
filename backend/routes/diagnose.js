@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const openai = require('../utils/openaiClient');
-const db = require('../utils/db');
+const db = require('../db/connection');
+const authMiddleware = require('../utils/authMiddleware.js'); 
+const authenticateToken = require('../utils/jwt')
 
-router.post('/', async (req,res) => {
+router.post('/', authMiddleware, async (req,res) => {
     try {
-        // フロントエンドからのrequest（JSON形式）のconversationHiostory keyを読み取り
+        // フロントエンドからのrequest（JSON形式）のconversationHistory keyを読み取り
         const { conversationHistory } = req.body;
 
         if(!conversationHistory || !Array.isArray(conversationHistory)) {
@@ -27,8 +29,8 @@ router.post('/', async (req,res) => {
 - 年齢・性別：
 
 【推奨行動】
-- 受診の必要性
-- 医師に伝えるべきポイント
+- 緊急度（上記3段階のどれか）：
+- 医師に伝えるべきポイント（箇条書き）
     `;
 
     const messages = [
@@ -43,12 +45,21 @@ router.post('/', async (req,res) => {
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: "こんにちは" }],
       });
-    
-    const result = completion.choices[0].message.content;
 
-    const [rows] = await db.execute(
+      const userId = req.user.id;
+      const result = completion.choices[0].message.content;
+
+      // 応答テキストから緊急度を抽出（簡易パターンマッチ）
+      let level = 'Not classified';
+      if(result.includes('受信推奨')) level = '緊急';
+      else if(result.included('受信推奨')) level = '受信推奨';
+      else if(result.includes('自宅様子見')) level = '自宅様子見';
+
+    
+
+    const [rows] = await db.execute( 
         'INSERT INTO diagnoses (user_id, result_summary, diagnosis_level) VALUES (?,?,?)',
-        [userId, result,'未分類']
+        [userId, result, level]
     );
 
     res.status(200).jsonp({ summary: result });
@@ -58,5 +69,43 @@ router.post('/', async (req,res) => {
     res.status(500).json({ error: 'API Error'});
 }
 });
+
+router.get('/', authMiddleware, async(req,res) => {
+    try{
+        const userId = req.user.id;
+        
+        const [rows] = await db.execute(
+            `SELECT id, result_summary, diagnosis_level, created_at FROM diagnoses WHERE user_id = ? ORDER BY created_at DESC`,
+        [userId]
+        );
+        res.status(200).json(rows);
+    } catch(err){
+        console.error('履歴取得エラー：', err);
+        res.status(500).json({ error: 'Failed to get diagnosis summary'});
+    }
+});
+
+router.get('/:id', authMiddleware, async(req, res) => {
+    try{
+        const userId = req.user.id;
+        const diagnosisId = req.params.id;
+
+        const [rows] = await db.execute(
+            `SELECT id, result_summary, diagnosis_level, created_at
+            FROM diagnoses
+            WHERE id = ? AND user_id = ?`
+            ,[diagnosisId, userId]
+        );
+
+        if(rows.length === 0) {
+            return res.status(404).json({ error: 'No result for this diagnosis '});
+        }
+
+        res.status(200).json(rows[0]);
+    } catch(err){
+        console.error('Error of get detail:', err);
+        return res.status(500).json({ error: 'Failed to get the diagnosis detail'});
+    }
+})
 
 module.exports = router;

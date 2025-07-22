@@ -14,7 +14,7 @@ export default function voiceDiagnose(){
         recognition.lang = 'ja-JP';
         recognition.interimResults = false;
         recognition.continuous = false;
-        recognition.continuous = recognition;
+        // recognition.continuous = recognition;
 
         recognition.result = async (event:any) => {
             const speechText = event.results[0][0].transcript;
